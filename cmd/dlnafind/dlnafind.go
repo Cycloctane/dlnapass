@@ -13,11 +13,12 @@ func main() {
 	searchSec := flag.Uint("t", defaultSearchSec, "Search duration (seconds)")
 	flag.Parse()
 
+	fmt.Println("Searching UPnP root devices...")
 	devices, err := upnp.SearchDevice(int(*searchSec))
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("Found %d devices...\n\n", len(devices))
+	fmt.Printf("Found %d devices:\n\n", len(devices))
 	for i, d := range devices {
 		fmt.Printf("Device #%d: %s\n", i+1, d.USN)
 		fmt.Printf("\t[+] Server: %s\n", d.Server)

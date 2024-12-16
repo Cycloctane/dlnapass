@@ -69,15 +69,17 @@ loop:
 			break loop
 		case <-repeat:
 			if !upnp.IsAlive(location.String(), desc.Device.UDN) {
-				logger.Printf("Cannot reach original device at %s. Closing...\n", location)
+				logger.Printf("Cannot reach original device at %s.\n", location)
 				break loop
 			} else {
 				if err := ads.NotifyAll(); err != nil {
+					logger.Println(err)
 					break loop
 				}
 			}
 		}
 	}
 
+	logger.Println("Closing SSDP advertisement. Sending ssdp:byebye...")
 	ads.CloseAll()
 }

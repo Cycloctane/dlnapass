@@ -27,12 +27,12 @@ func GetDesc(location string) (*RootDesc, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer resp.Body.Close()
 	desc := &RootDesc{}
 	decoder := xml.NewDecoder(resp.Body)
 	if err := decoder.Decode(desc); err != nil {
 		return nil, err
 	}
-	resp.Body.Close()
 	return desc, nil
 }
 

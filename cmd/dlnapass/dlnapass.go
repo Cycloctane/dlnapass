@@ -53,12 +53,12 @@ func main() {
 	logger.SetPrefix("[+] ")
 	logger.Println("Starting SSDP advertisement...")
 
-	ads, err := upnp.SetupAdvertise(location.String(), desc, defaultMaxAgeSec)
+	ads, err := upnp.SetupAdvertise(location.String(), desc, *maxAge)
 	if err != nil {
 		logger.Panicln(err)
 	}
 
-	repeat := time.Tick(time.Duration(defaultMaxAgeSec) * time.Second)
+	repeat := time.Tick(time.Duration(*maxAge) * time.Second)
 	quit := make(chan os.Signal, 1)
 	signal.Notify(quit, os.Interrupt)
 
@@ -71,11 +71,9 @@ loop:
 			if !upnp.IsAlive(location.String(), desc.Device.UDN) {
 				logger.Printf("Cannot reach original device at %s.\n", location)
 				break loop
-			} else {
-				if err := ads.NotifyAll(); err != nil {
-					logger.Println(err)
-					break loop
-				}
+			} else if err := ads.NotifyAll(); err != nil {
+				logger.Println(err)
+				break loop
 			}
 		}
 	}

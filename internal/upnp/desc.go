@@ -3,7 +3,12 @@ package upnp
 import (
 	"encoding/xml"
 	"net/http"
+	"time"
 )
+
+const httpTimeout = 10
+
+var client = http.Client{Timeout: time.Second * httpTimeout}
 
 type RootDesc struct {
 	XMLName     xml.Name `xml:"root"`
@@ -23,7 +28,7 @@ type RootDesc struct {
 }
 
 func GetDesc(location string) (*RootDesc, error) {
-	resp, err := http.Get(location)
+	resp, err := client.Get(location)
 	if err != nil {
 		return nil, err
 	}

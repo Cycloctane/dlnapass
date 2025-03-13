@@ -7,6 +7,7 @@ import (
 	"net/url"
 	"os"
 	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/Cycloctane/dlnapass/internal/upnp"
@@ -60,7 +61,7 @@ func main() {
 
 	repeat := time.Tick(time.Duration(*maxAge) * time.Second)
 	quit := make(chan os.Signal, 1)
-	signal.Notify(quit, os.Interrupt)
+	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 
 loop:
 	for {

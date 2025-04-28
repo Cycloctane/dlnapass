@@ -1,6 +1,6 @@
 module github.com/Cycloctane/dlnapass
 
-go 1.22
+go 1.23
 
 require github.com/koron/go-ssdp v0.0.5
 

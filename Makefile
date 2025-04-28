@@ -1,13 +1,23 @@
 OUTPUT_DIR=build
-BINARY=dlnafind dlnapass
+BUILD=go build -v -ldflags="-s -w" -trimpath
 
-.PHONY: all $(BINARY) clean
+all: windows_x64 linux_x64 linux_static_x64 linux_static_arm64
 
-all: $(BINARY)
+windows_x64:
+	GOOS=windows GOARCH=amd64 $(BUILD) -o ./$(OUTPUT_DIR)/dlnapass_$@.exe ./cmd/dlnapass
+	GOOS=windows GOARCH=amd64 $(BUILD) -o ./$(OUTPUT_DIR)/dlnafind_$@.exe ./cmd/dlnafind
 
-$(BINARY):
-	GOOS=windows GOARCH=amd64 go build -v -o ./$(OUTPUT_DIR)/$@_windows_x64.exe -ldflags="-s -w" -trimpath ./cmd/$@
-	GOOS=linux GOARCH=amd64 go build -v -o ./$(OUTPUT_DIR)/$@_linux_x64 -ldflags="-s -w" -trimpath ./cmd/$@
+linux_x64:
+	GOOS=linux GOARCH=amd64 $(BUILD) -o ./$(OUTPUT_DIR)/dlnapass_$@ ./cmd/dlnapass
+	GOOS=linux GOARCH=amd64 $(BUILD) -o ./$(OUTPUT_DIR)/dlnafind_$@ ./cmd/dlnafind
+
+linux_static_x64:
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(BUILD) -o ./$(OUTPUT_DIR)/dlnapass_$@ ./cmd/dlnapass
+	CGO_ENABLED=0 GOOS=linux GOARCH=amd64 $(BUILD) -o ./$(OUTPUT_DIR)/dlnafind_$@ ./cmd/dlnafind
+
+linux_static_arm64:
+	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 $(BUILD) -o ./$(OUTPUT_DIR)/dlnapass_$@ ./cmd/dlnapass
+	CGO_ENABLED=0 GOOS=linux GOARCH=arm64 $(BUILD) -o ./$(OUTPUT_DIR)/dlnafind_$@ ./cmd/dlnafind
 
 clean:
 	rm -f $(OUTPUT_DIR)/*

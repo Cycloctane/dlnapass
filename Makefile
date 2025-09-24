@@ -1,6 +1,10 @@
 OUTPUT_DIR=build
 BUILD=go build -v -ldflags="-s -w" -trimpath
 
+.PHONY: all windows_x64 linux_x64 linux_static_x64 linux_static_arm64
+
+default: all
+
 all: windows_x64 linux_x64 linux_static_x64 linux_static_arm64
 
 windows_x64:

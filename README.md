@@ -4,7 +4,7 @@ DLNA Pass: Pass DLNA/UPnP discovery messages through subnet/vpn.
 
 This program acts like a [SSDP Server Proxy](https://datatracker.ietf.org/doc/html/draft-cai-ssdp-v1-01#section-7.2) for UPnP devices. It retrieves description from UPnP device and sends SSDP messages in local network to make the target UPnP device visible in local subnet.
 
-Location header in advertisement remains the same as UPnP device's orginal address. UPnP clients (control points) should be able to connect to the target UPnP device directly.
+Location header in advertisement remains the same as UPnP device's original address. UPnP clients (control points) should be able to connect to the target UPnP device directly.
 
 It can also be used for accessing remote DLNA/UPnP service through vpns that do not route multicast traffic (like ipsec and openvpn).
 

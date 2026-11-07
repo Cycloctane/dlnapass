@@ -11,10 +11,19 @@ import (
 
 const defaultSearchSec = 1
 
-func main() {
-	searchSec := flag.Uint("t", defaultSearchSec, "Search duration (seconds)")
-	flag.Parse()
+var version = "dev"
 
+var (
+	showVersion = flag.Bool("version", false, "Print version and exit")
+	searchSec   = flag.Uint("t", defaultSearchSec, "Search duration (seconds)")
+)
+
+func main() {
+	flag.Parse()
+	if *showVersion {
+		fmt.Printf("dlnafind %s\n", version)
+		return
+	}
 	fmt.Println("Searching UPnP root devices...")
 	devices, err := upnp.SearchDevice(int(*searchSec))
 	if err != nil {

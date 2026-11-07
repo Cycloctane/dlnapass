@@ -15,13 +15,23 @@ import (
 
 const defaultMaxAgeSec = 1800
 
+var version = "dev"
+
+var (
+	showVersion = flag.Bool("version", false, "Print version and exit")
+	locationStr = flag.String("u", "", "URL of upnp device's root description xml")
+	nicStr      = flag.String("i", "", "Network interface for multicast")
+	maxAge      = flag.Int("t", defaultMaxAgeSec, "Max age of upnp notify in seconds")
+	verbose     = flag.Bool("verbose", false, "Verbose logging (enable go-ssdp logger)")
+)
+
 func main() {
-	locationStr := flag.String("u", "", "URL of upnp device's root description xml")
-	nicStr := flag.String("i", "", "Network interface for multicast")
-	maxAge := flag.Int("t", defaultMaxAgeSec, "Max age of upnp notify in seconds")
-	verbose := flag.Bool("verbose", false, "Verbose logging (enable go-ssdp logger)")
 	flag.Parse()
 	logger := log.New(os.Stdout, "", 0)
+	if *showVersion {
+		logger.Printf("dlnapass %s\n", version)
+		return
+	}
 	if *maxAge < defaultMaxAgeSec {
 		logger.Fatalln("Error: Max-age should be greater than 1800 seconds.")
 	}
